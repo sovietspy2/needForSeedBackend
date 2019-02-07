@@ -3,6 +3,7 @@ const uuid = require('uuid/v1');
 
 module.exports = {
     home(req, res, next) {
+        console.log(req.db);
         res.status(200).send("hello");
     },
 
