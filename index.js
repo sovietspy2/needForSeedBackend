@@ -34,7 +34,7 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, db) => {
     if (error) return process.exit(1);
     console.log('Connected to Database');
 
-    const mongoMiddleware = function (req, res, next, db) {
+    const mongoMiddleware = function (req, res, next) {
         req.db = db;
         next();
     };
