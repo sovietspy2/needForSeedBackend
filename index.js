@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const withAuth = require('./middleware');
 const mongodb = require('mongodb');
 require('dotenv').config();
-
+const User = require("./entities/user");
 
 const secret = 'mysecretsshhh';
 
@@ -30,12 +30,12 @@ app.use(errorHandler());
 
 
 
-mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, db) => {
+mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     if (error) return process.exit(1);
     console.log('Connected to Database');
 
     const mongoMiddleware = function (req, res, next) {
-        req.db = db;
+        req.db = client.db("data");
         next();
     };
 
@@ -43,6 +43,25 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, db) => {
 
 
     app.get('/home', routes.home);
+
+    app.get('/api/secret', function(req, res) {
+        res.send('The password is potato');
+    });
+
+    app.post('/api/register', function(req, res) {
+        console.log(req.body.username)
+        console.log(req.body.password);
+        const {username, password} = req.body;
+        const user = new User(username,password);
+        req.db.collection("users").save(user, function(err) {
+          if (err) {
+            res.status(500)
+              .send("Error registering new user please try again.");
+          } else {
+            res.status(200).send("Welcome to the club!");
+          }
+        });
+      });
 
 
     
