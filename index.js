@@ -8,7 +8,7 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const withAuth = require('./middleware');
 const mongodb = require('mongodb');
-require('dotenv').config()
+require('dotenv').config();
 
 
 const secret = 'mysecretsshhh';
