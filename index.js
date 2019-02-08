@@ -45,60 +45,14 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
 
     app.get('/home', routes.home);
 
-    app.get('/api/secret',withAuth, function(req, res) {
-        res.send('The password is potato');
-    });
-
-    app.post('/api/register', function(req, res) {
-        console.log(req.body.username)
-        console.log(req.body.password);
-        const {username, password} = req.body;
-        const user = new User(username,password);
-        req.db.collection("users").save(user, function(err) {
-          if (err) {
-            res.status(500)
-              .send("Error registering new user please try again.");
-          } else {
-            res.status(200).send("Welcome to the club!");
-          }
-        });
-      });
+    app.post('/api/register', routes.register);
 
 
-      app.post('/api/authenticate', function(req, res, next) {
-        const { username, password } = req.body;
-        console.log(username);
-        req.db.collection(CONSTANTS.USERS).findOne({ username: username }, function(err, user) {
-              if (err) console.log("elbaszodott");
-              if (user) {
-                console.log(user);
-                  // Issue token
+      app.post('/api/authenticate', routes.authenticate);
 
-                  if (user.password === password) {
+    app.post('/logout', withAuth, routes.logout);
 
-                  const payload = { username };
-                  const token = jwt.sign(payload, secret, {
-                    expiresIn: '1h'
-                  });
-                  //res.status(200).send();
-                  res.cookie('token', token, { httpOnly: true }).sendStatus(200);
-                } else {
-                  res.status(403).send();
-                }
-            }
-            
-          });
-    });
-
-    app.post('/logout', withAuth, function(req,res) {
-        console.log("LOGGING OUT");
-        res.clearCookie("token").send();
-    });
-
-    app.get('/checkToken', withAuth, function(req, res) {
-      console.log(req.body);
-      res.sendStatus(200);
-    });
+    app.get('/checkToken', withAuth, routes.checkToken);
 
     app.use(errorHandler());
     app.listen(port);
