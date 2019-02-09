@@ -4,7 +4,9 @@
   "description": "express app",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "dev": "nodemon index.js && cd frontend && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,10 +17,12 @@
     "node",
     "express"
   ],
+  "homepage": "http://myname.github.io/myapp",
   "author": "SovietSpy2",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^3.0.4",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.2.0",
     "errorhandler": "^1.5.0",
