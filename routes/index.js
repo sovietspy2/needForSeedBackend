@@ -107,4 +107,23 @@ module.exports = {
             res.status(200).send(record);
         });
       },
+
+      checkUsername(req,res) {
+        const { username } = req.body;
+        console.log("USERNAME",username);
+        req.db.collection(CONSTANTS.USERS).find({ 'username': username }, {})
+        .limit(1)
+        .toArray((error, record)=>{
+            if (error) return next(error);
+            console.log(record);
+            const user = record[0];
+            console.log(user);
+             if ( user===undefined || record===[] || (user && !user.username)) {
+              res.status(200).send();
+             } else {
+              res.status(409).send();
+             }
+            
+        });
+      },
 };

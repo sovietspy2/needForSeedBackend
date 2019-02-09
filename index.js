@@ -59,6 +59,8 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     app.get('/api/nextPost', routes.nextPost);
 
     app.get('/api/previousPost', routes.previousPost);
+
+    app.post('/api/checkUsername', routes.checkUsername);
     
 
     // The "catchall" handler: for any request that doesn't
