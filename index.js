@@ -45,60 +45,30 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
 
     app.get('/home', routes.home);
 
-    app.get('/api/secret',withAuth, function(req, res) {
-        res.send('The password is potato');
+    app.post('/api/register', routes.register);
+
+
+      app.post('/api/authenticate', routes.authenticate);
+
+    app.post('/logout', withAuth, routes.logout);
+
+    app.get('/checkToken', withAuth, routes.checkToken);
+
+    app.get('/api/lastPost', routes.lastPost);
+
+    app.get('/api/nextPost', routes.nextPost);
+
+    app.get('/api/previousPost', routes.previousPost);
+
+    app.post('/api/checkUsername', routes.checkUsername);
+    
+
+    // The "catchall" handler: for any request that doesn't
+    // match one above, send back React's index.html file.
+    /* app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname+'/frontend/build/index.html'));
     });
-
-    app.post('/api/register', function(req, res) {
-        console.log(req.body.username)
-        console.log(req.body.password);
-        const {username, password} = req.body;
-        const user = new User(username,password);
-        req.db.collection("users").save(user, function(err) {
-          if (err) {
-            res.status(500)
-              .send("Error registering new user please try again.");
-          } else {
-            res.status(200).send("Welcome to the club!");
-          }
-        });
-      });
-
-
-      app.post('/api/authenticate', function(req, res, next) {
-        const { username, password } = req.body;
-        console.log(username);
-        req.db.collection(CONSTANTS.USERS).findOne({ username: username }, function(err, user) {
-              if (err) console.log("elbaszodott");
-              if (user) {
-                console.log(user);
-                  // Issue token
-
-                  if (user.password === password) {
-
-                  const payload = { username };
-                  const token = jwt.sign(payload, secret, {
-                    expiresIn: '1h'
-                  });
-                  //res.status(200).send();
-                  res.cookie('token', token, { httpOnly: true }).sendStatus(200);
-                } else {
-                  res.status(403).send();
-                }
-            }
-            
-          });
-    });
-
-    app.post('/logout', withAuth, function(req,res) {
-        console.log("LOGGING OUT");
-        res.clearCookie("token").send();
-    });
-
-    app.get('/checkToken', withAuth, function(req, res) {
-      console.log(req.body);
-      res.sendStatus(200);
-    });
+ */
 
     app.use(errorHandler());
     app.listen(port);
