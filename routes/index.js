@@ -126,4 +126,15 @@ module.exports = {
             
         });
       },
+
+      savePost(req, res) {
+        setTimeout(()=>{
+          console.log(req.body);
+          const {payload} = req.body;
+          console.log(payload);
+          req.db.collection(CONSTANTS.POSTS).insertOne(payload);
+          res.status(200).send();
+        }
+        ,5000); 
+      }
 };

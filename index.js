@@ -62,6 +62,7 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
 
     app.post('/api/checkUsername', routes.checkUsername);
     
+    app.post('/api/savePost', routes.savePost);
 
     // The "catchall" handler: for any request that doesn't
     // match one above, send back React's index.html file.
