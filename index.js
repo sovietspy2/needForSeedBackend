@@ -62,9 +62,9 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
 
       app.post('/api/authenticate', routes.authenticate);
 
-    app.post('/logout', withAuth, routes.logout);
+    app.post('/api/logout', withAuth, routes.logout);
 
-    app.get('/checkToken', withAuth, routes.checkToken);
+    app.get('/api/checkToken', withAuth, routes.checkToken);
 
     app.get('/api/lastPost', routes.lastPost);
 
