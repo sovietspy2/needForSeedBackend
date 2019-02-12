@@ -31,7 +31,7 @@ app.use(morgan('dev'));
 
 
 var corsOptions = {
-  origin: '*',
+  origin: ['http://localhost:1234', 'http://app.wortex.stream/','http://app.wortex.stream:1234'],
   credentials: true,
   preflightContinue: true,
 }
