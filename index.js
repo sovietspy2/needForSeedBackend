@@ -30,7 +30,7 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(morgan('dev'));
 
 
-var whitelist = ['http://app.wortex.stream']
+var whitelist = ['http://app.wortex.stream', 'http://app.wortex.stream:1234']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
