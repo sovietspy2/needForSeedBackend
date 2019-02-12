@@ -11,6 +11,7 @@ const mongodb = require('mongodb');
 require('dotenv').config();
 const User = require("./entities/user");
 const CONSTANTS = require("./constants");
+const cors = require('cors');
 
 const secret = 'mysecretsshhh';
 
@@ -29,6 +30,19 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(morgan('dev'));
 
 
+var whitelist = ['http://app.wortex.stream']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+app.use(cors(corsOptions));
+
 
 
 mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
@@ -39,6 +53,9 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
         req.db = client.db("data");
         next();
     };
+
+
+    
 
     app.use(mongoMiddleware);
 
