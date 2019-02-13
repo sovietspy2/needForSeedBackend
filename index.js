@@ -29,6 +29,7 @@ app.use(bodyParser.json()); // support json encoded bodies
 
 app.use(morgan('dev'));
 
+
 mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     if (error) return process.exit(1);
     console.log('Connected to Database');
@@ -46,24 +47,24 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
 
     app.get('/home', routes.home);
 
-    app.post('/api/register', routes.register);
+    app.post('/register', routes.register);
 
 
-      app.post('/api/authenticate', routes.authenticate);
+      app.post('/authenticate', routes.authenticate);
 
     app.post('/logout', withAuth, routes.logout);
 
     app.get('/checkToken', withAuth, routes.checkToken);
 
-    app.get('/api/lastPost', routes.lastPost);
+    app.get('/lastPost', routes.lastPost);
 
-    app.get('/api/nextPost', routes.nextPost);
+    app.get('/nextPost', routes.nextPost);
 
-    app.get('/api/previousPost', routes.previousPost);
+    app.get('/previousPost', routes.previousPost);
 
-    app.post('/api/checkUsername', routes.checkUsername);
+    app.post('/checkUsername', routes.checkUsername);
     
-    app.post('/api/savePost', routes.savePost);
+    app.post('/savePost', routes.savePost);
 
     // The "catchall" handler: for any request that doesn't
     // match one above, send back React's index.html file.
