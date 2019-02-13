@@ -29,24 +29,6 @@ app.use(bodyParser.json()); // support json encoded bodies
 
 app.use(morgan('dev'));
 
-
-var whitelist = ['http://app.wortex.stream', 'http://app.wortex.stream:1234', 'http://localhost', '0.0.0.0']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  credentials: true,
-  preflightContinue: true,
-}
-
-app.use('*',cors(corsOptions));
-
-
-
 mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     if (error) return process.exit(1);
     console.log('Connected to Database');
@@ -57,7 +39,7 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     };
 
 
-    
+
 
     app.use(mongoMiddleware);
 
