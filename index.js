@@ -20,17 +20,12 @@ const url = process.env.DB_CONNECTION;
 
 const port = process.env.PORT || 1234;
 
-
-
 let app = express();
 app.use(cookieParser());
 app.use(bodyParser.json()); // support json encoded bodies
 
 
 app.use(morgan('dev'));
-
-
-
 mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     if (error) return process.exit(1);
     console.log('Connected to Database');
@@ -41,7 +36,7 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     };
 
 
-    
+
 
     app.use(mongoMiddleware);
 
