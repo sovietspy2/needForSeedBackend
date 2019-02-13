@@ -30,15 +30,6 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(morgan('dev'));
 
 
-var corsOptions = {
-  origin: ['http://localhost:1234', 'http://app.wortex.stream/','http://app.wortex.stream:1234'],
-  credentials: true,
-  preflightContinue: true,
-}
-
-app.use(cors(corsOptions));
-
-
 
 mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     if (error) return process.exit(1);
@@ -60,7 +51,7 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     app.post('/register', routes.register);
 
 
-      app.post('/authenticate', routes.authenticate);
+    app.post('/authenticate', routes.authenticate);
 
     app.post('/logout', withAuth, routes.logout);
 
