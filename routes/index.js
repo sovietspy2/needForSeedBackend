@@ -78,7 +78,8 @@ module.exports = {
         .limit(1)
         .toArray((error, record)=>{
             if (error) return next(error);
-            res.status(200).send(record);
+            const data = module.exports.calculateLikes(record);
+            res.status(200).send(data);
         });
       },
 
@@ -90,8 +91,8 @@ module.exports = {
         .limit(1)
         .toArray((error, record)=>{
             if (error) return next(error);
-            console.log(record);
-            res.status(200).send(record);
+            const data = module.exports.calculateLikes(record);
+            res.status(200).send(data);
         });
       },
 
@@ -103,9 +104,18 @@ module.exports = {
         .limit(1)
         .toArray((error, record)=>{
             if (error) return next(error);
-            console.log(record);
-            res.status(200).send(record);
+            const data = module.exports.calculateLikes(record);
+            res.status(200).send(data);
         });
+      },
+
+      calculateLikes(record) {
+        let data = null;        
+        if (record.length===1) {
+          data = record[0];
+          data.likes = data.likes ? data.likes.length : 0;
+        }
+        return data;
       },
 
       checkUsername(req,res) {
@@ -128,13 +138,17 @@ module.exports = {
       },
 
       savePost(req, res) {
-        setTimeout(()=>{
-          console.log(req.body);
           const {payload} = req.body;
           console.log(payload);
           req.db.collection(CONSTANTS.POSTS).insertOne(payload);
           res.status(200).send();
-        }
-        ,5000); 
-      }
+      },
+
+      likePost(req,res) {
+        console.log(req.body);
+        const {_id, username} = req.body;
+        console.log(_id);
+        req.db.collection(CONSTANTS.POSTS).updateOne({_id:mongodb.ObjectID(_id)}, {$addToSet:{likes: username}});
+        res.status(200).send();
+      },
 };
