@@ -151,4 +151,28 @@ module.exports = {
         req.db.collection(CONSTANTS.POSTS).updateOne({_id:mongodb.ObjectID(_id)}, {$addToSet:{likes: username}});
         res.status(200).send();
       },
+
+      saveComment(req, res) {
+        const {payload} = req.body;
+        
+
+        const comment = {
+          text: payload.text,
+          username: payload.username,
+          date: payload.date,
+        }
+
+        req.db.collection(CONSTANTS.POSTS).updateOne({_id:mongodb.ObjectID(payload.id)}, {$push:{comments: comment}});
+        res.status(200).send();
+    },
+
+    loadComments(req, res) { 
+      const { _id } = req.body;
+      req.db.collection(CONSTANTS.POSTS).findOne({ '_id': mongodb.ObjectID(_id)}, {comments: 1, _id:0},
+      function(error, record) {
+        if (error) return next(error);
+        res.status(200).send(record.comments);
+
+    });
+    }
 };

@@ -64,6 +64,10 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
 
     app.post('/likePost', routes.likePost);
 
+    app.post('/saveComment', routes.saveComment);
+
+    app.post('/loadComments', routes.loadComments);
+
     // The "catchall" handler: for any request that doesn't
     // match one above, send back React's index.html file.
     /* app.get('*', (req, res) => {
