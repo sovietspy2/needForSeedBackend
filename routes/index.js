@@ -96,6 +96,25 @@ module.exports = {
         });
       },
 
+      loadMultiplePosts(req,res) {
+        let { page } = req.body;
+        if (!page) {
+          page = 1;
+        }
+        console.log(page);
+        const skip = (page-1) * CONSTANTS.PAGE_SIZE;
+        req.db.collection(CONSTANTS.POSTS).find({}, {sort:{_id:-1}})
+        .skip(skip)
+        .limit(CONSTANTS.PAGE_SIZE)
+        .toArray((error, record)=>{
+            if (error) return next(error);
+            const value = record.map( item => {
+              return module.exports.calculateLikesSingleRecord(item);
+            });
+            res.status(200).send(value);
+        });
+      },
+
       loadPost(req,res) {
         const { _id } = req.body;
         console.log(_id);
