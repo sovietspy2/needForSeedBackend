@@ -96,6 +96,23 @@ module.exports = {
         });
       },
 
+      loadPost(req,res) {
+        const { _id } = req.body;
+        console.log(_id);
+
+        if (!mongodb.ObjectID.isValid(_id)) {
+            res.status(404).send();
+        }
+        req.db.collection(CONSTANTS.POSTS).findOne({ '_id': mongodb.ObjectID(_id) },
+        function(error, record) {
+            if (error) return next(error);
+            console.log(record);
+            const data = module.exports.calculateLikesSingleRecord(record);
+            console.log(data);
+            res.status(200).send(data);
+        });
+      },
+
       previousPost(req,res) {
         console.log(req.query);
         const id = req.query.id;
@@ -116,6 +133,11 @@ module.exports = {
           data.likes = data.likes ? data.likes.length : 0;
         }
         return data;
+      },
+
+      calculateLikesSingleRecord(record) {
+        record.likes = record.likes ? record.likes.length : 0;
+        return record;
       },
 
       checkUsername(req,res) {
