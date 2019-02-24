@@ -168,9 +168,10 @@ module.exports = {
 
     loadComments(req, res) { 
       const { _id } = req.body;
-      req.db.collection(CONSTANTS.POSTS).findOne({ '_id': mongodb.ObjectID(_id)}, {comments: 1, _id:0},
+      req.db.collection(CONSTANTS.POSTS).findOne({ '_id': mongodb.ObjectID(_id)}, { "projection": {"comments": 1 }},
       function(error, record) {
         if (error) return next(error);
+        console.log(record);
         res.status(200).send(record.comments);
 
     });
