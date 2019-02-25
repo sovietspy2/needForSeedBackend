@@ -17,7 +17,6 @@ const secret = 'mysecretsshhh';
 
 const url = process.env.DB_CONNECTION;
 
-
 const port = process.env.PORT || 1234;
 
 let app = express();
@@ -35,16 +34,11 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
         next();
     };
 
-
-
-
     app.use(mongoMiddleware);
-
 
     app.get('/home', routes.home);
 
     app.post('/register', routes.register);
-
 
     app.post('/authenticate', routes.authenticate);
 
@@ -71,13 +65,6 @@ mongodb.MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     app.post('/loadPost', routes.loadPost);
 
     app.post('/loadPosts', routes.loadMultiplePosts);
-
-    // The "catchall" handler: for any request that doesn't
-    // match one above, send back React's index.html file.
-    /* app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname+'/frontend/build/index.html'));
-    });
- */
 
     app.use(errorHandler());
     app.listen(port);
